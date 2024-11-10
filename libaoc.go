@@ -40,3 +40,12 @@ func SumSlice(inOrder []int) (sum int) {
 	}
 	return sum
 }
+
+// ReverseString returns a reversed string
+func ReverseString(word string) string {
+	var reversed string
+	for i := len(word) - 1; i >= 0; i-- {
+		reversed = reversed + string(word[i])
+	}
+	return reversed
+}
