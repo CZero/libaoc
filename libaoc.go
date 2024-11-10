@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-// readLines reads a whole file into memory
+// ReadLines reads a whole file into memory
 // and returns a slice of its lines.
 func ReadLines(path string) ([]string, error) {
 	file, err := os.Open(path)
