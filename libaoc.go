@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // ReadLines reads a whole file into memory
@@ -41,6 +42,14 @@ func SumSlice(inOrder []int) (sum int) {
 	return sum
 }
 
+// ProductSlice returns the product of a slice
+func ProductSlice(inOrder []int) (sum int) {
+	for _, item := range inOrder {
+		sum *= item
+	}
+	return sum
+}
+
 // ReverseString returns a reversed string
 func ReverseString(word string) string {
 	var reversed string
@@ -48,4 +57,16 @@ func ReverseString(word string) string {
 		reversed = reversed + string(word[i])
 	}
 	return reversed
+}
+
+// Paniccheck panics on error
+func Paniccheck(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
+// RemoveSpaces removes all extra whitespace from a string
+func RemoveSpaces(input string) string {
+	return strings.Join(strings.Fields(input), " ")
 }
