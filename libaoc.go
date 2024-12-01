@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -69,4 +70,10 @@ func Paniccheck(e error) {
 // RemoveSpaces removes all extra whitespace from a string
 func RemoveSpaces(input string) string {
 	return strings.Join(strings.Fields(input), " ")
+}
+
+// SortIntSlice sorts an intslice
+func sortIntSlice(input []int) []int {
+	sort.Ints(input)
+	return input
 }
