@@ -4,10 +4,10 @@ import "fmt"
 
 // These are based on AoC2024 D4
 
-// Coord holds {Column, Row} (I always get confuzzled with x,y)
+// Coord holds {Row, Column} (I always get confuzzled with x,y)
 type Coord struct {
-	c int // col
 	r int // row
+	c int // col
 }
 
 // Grid is the map containing the strings
@@ -22,29 +22,28 @@ type StringsMatrix struct {
 
 // buildMatrix is a method to build the matrix.
 func (m *StringsMatrix) buildMatrix(input []string) {
-	grid := m.grid
-	(*m).height = len(input)
-	for i, line := range input {
+	m.grid = make(Grid)
+	(*m).height = len(input) - 1
+	for r, line := range input {
 		if (*m).width == 0 {
-			(*m).width = len(line)
+			(*m).width = len(line) - 1
 		}
-		for j, char := range line {
-			grid[Coord{j, i}] = string(char)
+		for c, char := range line {
+			m.grid[Coord{r, c}] = string(char)
 		}
 	}
-	m.grid = grid
 }
 
 // printMatrix is a method to visually validate the matrix.
 func (m *StringsMatrix) printMatrix() {
 	fmt.Println()
 	var line string
-	for j := 0; j < (*m).height; j++ {
-		for i := 0; i < (*m).width; i++ {
-			if i == 0 {
+	for r := 0; r < (*m).height; r++ {
+		for c := 0; c < (*m).width; c++ {
+			if c == 0 {
 				line = ""
 			}
-			line = line + (*m).grid[Coord{i, j}]
+			line = line + (*m).grid[Coord{r, c}]
 		}
 		fmt.Printf("%s\n", line)
 	}
@@ -61,13 +60,13 @@ func (m *StringsMatrix) inmatrix(coord Coord) bool {
 func (m *StringsMatrix) wordSearch(word string) (occurrences int) {
 	firstLetter := string(word[0])
 	directions := []string{"n", "ne", "e", "se", "s", "sw", "w", "nw"}
-	for j := 0; j < (*m).height; j++ {
-		for i := 0; i < (*m).width; i++ {
-			switch m.grid[Coord{i, j}] {
+	for r := 0; r < (*m).height; r++ {
+		for c := 0; c < (*m).width; c++ {
+			switch m.grid[Coord{r, c}] {
 			case firstLetter:
 				// fmt.Printf("Found X: i %d, j %d\n", i, j)
 				for _, direction := range directions {
-					if m.searchDirection(direction, word, i, j) {
+					if m.searchDirection(direction, word, r, c) {
 						occurrences++
 					}
 				}
@@ -78,33 +77,33 @@ func (m *StringsMatrix) wordSearch(word string) (occurrences int) {
 }
 
 // searchDirection is a method that searches a "word" in a "direction", starting at i,j
-func (m *StringsMatrix) searchDirection(direction, word string, i, j int) (found bool) {
+func (m *StringsMatrix) searchDirection(direction, word string, r, c int) (found bool) {
 	for _, letter := range word {
-		if !(*m).inmatrix(Coord{i, j}) {
+		if !(*m).inmatrix(Coord{r, c}) {
 			return false
 		}
-		if (*m).grid[Coord{i, j}] == string(letter) { // If the letter is correct, prep for the next
+		if (*m).grid[Coord{r, c}] == string(letter) { // If the letter is correct, prep for the next
 			switch direction {
 			case "n":
-				j--
+				r--
 			case "e":
-				i++
+				c++
 			case "s":
-				j++
+				r++
 			case "w":
-				i--
+				c--
 			case "ne":
-				i++
-				j--
+				c++
+				r--
 			case "nw":
-				i--
-				j--
+				c--
+				r--
 			case "se":
-				i++
-				j++
+				c++
+				r++
 			case "sw":
-				i--
-				j++
+				c--
+				r++
 			}
 		} else { // The found letter was different
 			return false
